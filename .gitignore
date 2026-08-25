@@ -1,59 +1,41 @@
 ```
 # Dependencies
 node_modules/
-
+node_modules/**
+# Build outputs
+dist/
+dist/**
+build/
+build/**
+# TypeScript
+*.tsbuildinfo
+# Logs
+*.log
 # Environment variables
 .env
 .env.local
 .env.*
-
-# Build outputs
-dist/
-build/
-target/
-
-# TypeScript
-*.tsbuildinfo
-*.js.map
-
-# Python (in case Python files are added later)
+# IDE files
+.vscode/
+.vscode/**
+.idea/
+.idea/**
+# OS generated files
+.DS_Store
+Thumbs.db
+# Python cache (if any Python files exist in the project)
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
-.Python
-env/
-venv/
-.venv/
-.venv.bak/
-pip-log.txt
-pip-delete-this-directory.txt
-.tox/
+# Coverage reports
+coverage/
+htmlcov/
 .coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.log
-.git/modules/
-.DS_Store
-Thumbs.db
-
-# IDE specific
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
+# Temporary files
+*.tmp
+*.temp
+*.bak
+# Local configuration
+!.gitignore
 ```.next/
-.next/
