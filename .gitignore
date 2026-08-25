@@ -39,3 +39,4 @@ htmlcov/
 # Local configuration
 !.gitignore
 ```.next/
+.next/
