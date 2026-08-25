@@ -12,6 +12,8 @@ import { FeesModule } from './modules/fees/fees.module';
 import { LibraryModule } from './modules/library/library.module';
 import { TransportModule } from './modules/transport/transport.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
+import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { TimetableModule } from './modules/timetable/timetable.module';
 import { DatabaseConfig } from './config/database.config';
 
 @Module({
@@ -40,6 +42,8 @@ import { DatabaseConfig } from './config/database.config';
     LibraryModule,
     TransportModule,
     NotificationsModule,
+    AnalyticsModule,
+    TimetableModule,
   ],
 })
 export class AppModule {}
