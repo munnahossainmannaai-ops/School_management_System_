@@ -1,0 +1,106 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sms-app
+  namespace: school-system
+  labels:
+    app: sms-app
+    version: v1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: sms-app
+  template:
+    metadata:
+      labels:
+        app: sms-app
+        version: v1
+    spec:
+      containers:
+        - name: sms-app
+          image: school-management-system:latest
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "3000"
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: sms-secrets
+                  key: db-host
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: sms-secrets
+                  key: db-username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: sms-secrets
+                  key: db-password
+            - name: DB_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: sms-secrets
+                  key: db-database
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: sms-config
+                  key: redis-host
+            - name: REDIS_PORT
+              value: "6379"
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sms-secrets
+                  key: jwt-secret
+            - name: JWT_EXPIRATION
+              value: "1d"
+            - name: JWT_REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: sms-secrets
+                  key: jwt-refresh-secret
+            - name: JWT_REFRESH_EXPIRATION
+              value: "7d"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            timeoutSeconds: 3
+            failureThreshold: 3
+          volumeMounts:
+            - name: uploads-volume
+              mountPath: /app/uploads
+      volumes:
+        - name: uploads-volume
+          persistentVolumeClaim:
+            claimName: sms-uploads-pvc
+      restartPolicy: Always

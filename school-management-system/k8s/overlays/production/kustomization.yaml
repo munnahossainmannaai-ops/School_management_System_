@@ -1,0 +1,52 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: school-system
+
+resources:
+  - ../base
+
+images:
+  - name: school-management-system
+    newName: your-dockerhub-username/school-management-system
+    newTag: v1.0.0
+
+replicas:
+  - name: sms-app
+    count: 5
+
+patches:
+  - target:
+      kind: Deployment
+      name: sms-app
+    patch: |-
+      - op: replace
+        path: /spec/template/spec/containers/0/imagePullPolicy
+        value: Always
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/memory
+        value: "512Mi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/requests/cpu
+        value: "500m"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/memory
+        value: "1Gi"
+      - op: replace
+        path: /spec/template/spec/containers/0/resources/limits/cpu
+        value: "1000m"
+
+secretGenerator:
+  - name: sms-secrets
+    behavior: merge
+    literals:
+      - db-password=your-super-secure-production-password
+      - jwt-secret=your-super-secure-jwt-secret-min-32-chars
+      - jwt-refresh-secret=another-super-secure-refresh-secret-min-32-chars
+
+configMapGenerator:
+  - name: sms-config
+    behavior: merge
+    literals:
+      - redis-host=sms-redis.production.svc.cluster.local
+      - log-level=warn
