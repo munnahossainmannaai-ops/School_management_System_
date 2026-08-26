@@ -4,10 +4,8 @@ import {
   Body,
   HttpCode,
   HttpStatus,
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterDto, LoginDto, RefreshTokenDto } from './dto/auth.dto';
 
